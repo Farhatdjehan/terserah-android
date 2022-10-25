@@ -17,7 +17,10 @@ const App = () => {
   return (
     <>
       <StatusBar backgroundColor="#5d39dd" />
-      <WebView source={{ uri: 'https://terserah-deh.vercel.app/' }} />
+      <WebView
+        source={{ uri: 'https://terserah-deh.vercel.app/' }}
+        mediaPlaybackRequiresUserAction={false}
+      />
     </>
   );
 };
