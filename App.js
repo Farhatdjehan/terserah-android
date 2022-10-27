@@ -6,14 +6,14 @@
  * @flow strict-local
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Image, Linking, StatusBar, StyleSheet, Text, View } from 'react-native';
 import WebView from 'react-native-webview';
 import logo from './assets/trsrh.png';
 
 
 const App = () => {
-
+  const webViewRef = useRef();
   const [loading, setLoading] = useState();
   const [url, setUrl] = useState(null);
 
@@ -53,6 +53,7 @@ const App = () => {
       {
         url ?
           <WebView
+            ref={webViewRef}
             source={{ uri: 'https://terserah-deh.vercel.app/' }}
             mediaPlaybackRequiresUserAction={false}
             renderLoading={(e) => console.log(e)}
@@ -67,6 +68,12 @@ const App = () => {
             onLoad={syntheticEvent => {
               const { dispatchConfig } = syntheticEvent;
               setLoading(dispatchConfig.registrationName)
+            }}
+            onNavigationStateChange={(event) => {
+              if (event.url !== 'https://terserah-deh.vercel.app/') {
+                webViewRef.current.stopLoading();
+                Linking.openURL(event.url);
+              }
             }}
           />
           : null
